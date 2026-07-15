@@ -1,237 +1,142 @@
-// ================================
+// ==========================================
 // SIMOR Hardware Website
 // script.js
-// ================================
+// ==========================================
 
-// Wait until page loads
 document.addEventListener("DOMContentLoaded", () => {
-
     console.log("SIMOR Website Loaded");
 
-    // ================================
-    // Sticky Header
-    // ================================
+    // ==========================
+    // PRELOADER
+    // ==========================
+    const preloader = document.getElementById("preloader");
 
+    const hidePreloader = () => {
+        setTimeout(() => {
+            if (preloader) {
+                preloader.classList.add("hide");
+            }
+        }, 100);
+    };
+
+    // If the window is already loaded, hide preloader immediately. Otherwise, wait for load.
+    if (document.readyState === "complete") {
+        hidePreloader();
+    } else {
+        window.addEventListener("load", hidePreloader);
+    }
+
+    // ==========================
+    // STICKY HEADER
+    // ==========================
     const header = document.querySelector("header");
 
     window.addEventListener("scroll", () => {
+        if (!header) return;
 
         if (window.scrollY > 80) {
             header.classList.add("sticky");
         } else {
             header.classList.remove("sticky");
         }
-
     });
 
-    // ================================
-    // Mobile Menu
-    // ================================
+    // ==========================
+    // SMOOTH SCROLL (With Safety Check)
+    // ==========================
+    const navLinks = document.querySelectorAll('a[href^="#"]');
 
-    const menuBtn = document.querySelector(".menu-btn");
-    const nav = document.querySelector("nav");
-
-    if (menuBtn) {
-
-        menuBtn.addEventListener("click", () => {
-
-            nav.classList.toggle("active");
-
-        });
-
-    }
-
-    // ================================
-    // Smooth Scroll
-    // ================================
-
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(link => {
-
+    navLinks.forEach(link => {
         link.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
 
-            e.preventDefault();
+            // Bypass smooth scroll if the link is just a placeholder "#"
+            if (href === "#") return;
 
-            const target = document.querySelector(this.getAttribute("href"));
-
+            const target = document.querySelector(href);
             if (target) {
-
+                e.preventDefault();
                 target.scrollIntoView({
-
-                    behavior: "smooth"
-
+                    behavior: "smooth",
+                    block: "start"
                 });
-
             }
-
         });
-
     });
 
-    // ================================
-    // Scroll To Top Button
-    // ================================
-
+    // ==========================
+    // SCROLL TO TOP BUTTON
+    // ==========================
     const topBtn = document.getElementById("topBtn");
 
     if (topBtn) {
-
         window.addEventListener("scroll", () => {
-
-            if (window.scrollY > 500) {
-
-                topBtn.style.display = "block";
-
+            if (window.scrollY > 400) {
+                topBtn.style.display = "flex";
             } else {
-
                 topBtn.style.display = "none";
-
             }
-
         });
 
         topBtn.addEventListener("click", () => {
-
             window.scrollTo({
-
                 top: 0,
-
                 behavior: "smooth"
-
             });
-
         });
-
     }
 
-    // ================================
-    // Product Card Hover
-    // ================================
-
-    const cards = document.querySelectorAll(".product-card");
-
-    cards.forEach(card => {
-
-        card.addEventListener("mouseenter", () => {
-
-            card.style.transform = "translateY(-10px)";
-
-        });
-
-        card.addEventListener("mouseleave", () => {
-
-            card.style.transform = "translateY(0px)";
-
-        });
-
-    });
-
-    // ================================
-    // Counter Animation
-    // ================================
-
-    const counters = document.querySelectorAll(".counter");
-
-    counters.forEach(counter => {
-
-        const target = Number(counter.innerText);
-
-        let count = 0;
-
-        const speed = target / 100;
-
-        const updateCounter = () => {
-
-            if (count < target) {
-
-                count += speed;
-
-                counter.innerText = Math.floor(count);
-
-                requestAnimationFrame(updateCounter);
-
-            } else {
-
-                counter.innerText = target;
-
-            }
-
-        };
-
-        updateCounter();
-
-    });
-
-    // ================================
-    // Reveal Animation
-    // ================================
-
-    const reveals = document.querySelectorAll(".reveal");
-
-    function revealOnScroll() {
-
-        reveals.forEach(item => {
-
-            const top = item.getBoundingClientRect().top;
-
-            const windowHeight = window.innerHeight;
-
-            if (top < windowHeight - 100) {
-
-                item.classList.add("show");
-
-            }
-
-        });
-
-    }
-
-    window.addEventListener("scroll", revealOnScroll);
-
-    revealOnScroll();
-
-});
-
-// ================================
-// Dealer Button
-// ================================
-
-function becomeDealer() {
-
-    alert("Dealer Registration Coming Soon!");
-
-}
-
-// ================================
-// Catalogue Download
-// ================================
-
-function downloadCatalogue() {
-
-    window.location.href = "catalogue/simor-catalogue.pdf";
-
-}
-
-// ================================
-// WhatsApp Button
-// ================================
-
-function openWhatsApp() {
-
-    window.open(
-        "https://wa.me/919999999999",
-        "_blank"
+    // ==========================
+    // SIMPLE REVEAL ANIMATION
+    // ==========================
+    const revealItems = document.querySelectorAll(
+        ".trusted, .categories, .products, .about, .stats, .portfolio, .dealer, .contact"
     );
 
+    function revealSections() {
+        revealItems.forEach(item => {
+            const top = item.getBoundingClientRect().top;
+            if (top < window.innerHeight - 100) {
+                item.style.opacity = "1";
+                item.style.transform = "translateY(0)";
+            }
+        });
+    }
+
+    // Initialize initial state for reveal items
+    revealItems.forEach(item => {
+        item.style.opacity = "0";
+        item.style.transform = "translateY(40px)";
+        item.style.transition = "all .8s ease";
+    });
+
+    window.addEventListener("scroll", revealSections);
+    revealSections(); // Trigger once on load in case elements are already visible
+});
+
+// ==========================================
+// GLOBAL HELPER FUNCTIONS
+// ==========================================
+
+// Dealer Registration
+function becomeDealer() {
+    alert("Dealer Registration Coming Soon!");
 }
 
-// ================================
-// Call Button
-// ================================
+// Catalogue Download
+function downloadCatalogue() {
+    window.location.href = "catalogue/SIMOR-Catalogue.pdf";
+}
 
+// WhatsApp
+function openWhatsApp() {
+    window.open(
+        "https://wa.me/919876543210",
+        "_blank"
+    );
+}
+
+// Call
 function callNow() {
-
-    window.location.href = "tel:+919999999999";
-
+    window.location.href = "tel:+919876543210";
 }
