@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Product Catalogue Viewer | SIMOR Hardware</title>
+    <link rel="stylesheet" href="css/viewer.css">
+</head>
+<body>
+
+    <!-- Viewer Top Control Bar -->
+    <header class="viewer-header">
+        <div class="viewer-container">
+            <div class="viewer-left">
+                <a href="index.html" class="viewer-back-btn">← Back to Store</a>
+                <span class="document-title">SIMOR-Catalogue.pdf</span>
+            </div>
+            <div class="viewer-right">
+                <button class="viewer-download-btn" onclick="directDownload()">Download PDF</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Embedded Google Docs PDF Frame Container -->
+    <main class="iframe-wrapper">
+        <!-- Note: Replace the 'src' URL parameter below with your live hosted domain URL when deploying -->
+        <iframe 
+            src="https://drive.google.com/file/d/1VYg2oBCREs1xe4k-sOOSVy0htqyLRoEo/view?usp=sharing" 
+            frameborder="0">
+        </iframe>
+    </main>
+
+    <script src="js/viewer.js"></script>
+</body>
+</html>
